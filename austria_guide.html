@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Austria & Slovenia — 12-Day Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F4EFE4;
+    --parchment: #EDE6D6;
+    --ink: #1A1714;
+    --forest: #2D4A35;
+    --forest-light: #3D6647;
+    --sage: #7A9E82;
+    --gold: #B8963E;
+    --gold-light: #D4B060;
+    --mist: #CDD4C8;
+    --warm-white: #FAF7F0;
+    --terracotta: #A85840;
+    --slate: #4A5568;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 36px 100px;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    position: relative;
+    text-align: center;
+    padding-bottom: 48px;
+    margin-bottom: 56px;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .header-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 7vw, 64px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--forest);
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 0.12em;
+    margin-top: 18px;
+    text-transform: uppercase;
+  }
+
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .meta-label {
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 500;
+  }
+
+  .meta-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  /* ===== REGION LABEL ===== */
+  .region-label {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 52px 0 22px;
+  }
+
+  .region-label span {
+    font-size: 8.5px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--forest);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .region-label::before, .region-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mist), transparent);
+  }
+
+  /* ===== DAY CARD ===== */
+  .day-card {
+    background: var(--warm-white);
+    border: 1px solid #E4DDD0;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .day-card:hover {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+  }
+
+  /* Hero image */
+  .day-hero {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: var(--parchment);
+    position: relative;
+  }
+
+  .hero-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: var(--parchment);
+  }
+
+  .hero-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  .hero-container img.loading {
+    opacity: 0;
+  }
+
+  .hero-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--parchment) 0%, var(--mist) 100%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--sage);
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  .day-inner {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+  }
+
+  .day-num-col {
+    background: var(--forest);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 22px 8px;
+    gap: 3px;
+  }
+
+  .day-word {
+    font-size: 7.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 500;
+  }
+
+  .day-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--cream);
+    line-height: 1;
+    font-weight: 300;
+  }
+
+  .day-content {
+    padding: 22px 26px 20px;
+  }
+
+  .day-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .day-transport {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--terracotta);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .day-desc {
+    font-size: 13.5px;
+    color: #4A4540;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* ===== ACTIVITIES ===== */
+  .activities {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .activity {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 12.5px;
+    color: #5A5550;
+    line-height: 1.5;
+  }
+
+  .act-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    margin-top: 0px;
+  }
+
+  .act-paint  { background: #E4F0E8; }
+  .act-cable  { background: #FCE8E0; }
+  .act-hike   { background: #EEE8DC; }
+  .act-boat   { background: #DDE8F0; }
+  .act-city   { background: #EAE6F4; }
+  .act-train  { background: #F4EAE0; }
+
+  /* ===== PHOTO STRIP ===== */
+  .photo-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 4px;
+    margin-top: 14px;
+  }
+
+  .photo-thumb {
+    height: 70px;
+    overflow: hidden;
+    background: var(--parchment);
+    position: relative;
+  }
+
+  .photo-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease, opacity 0.4s ease;
+  }
+
+  .photo-thumb img.loading { opacity: 0; }
+  .photo-thumb:hover img { transform: scale(1.06); }
+
+  .photo-thumb .ph-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--parchment);
+    font-size: 9px;
+    color: var(--sage);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* ===== TIP ===== */
+  .tip {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: #F5F0E4;
+    border-left: 3px solid var(--gold);
+    font-size: 11.5px;
+    color: #706050;
+    font-style: italic;
+    line-height: 1.55;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer-note {
+    margin-top: 60px;
+    padding: 32px;
+    border: 1px solid var(--mist);
+    text-align: center;
+    background: var(--warm-white);
+  }
+
+  .footer-note h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 14px;
+    color: var(--forest);
+    font-style: italic;
+  }
+
+  .footer-note p {
+    font-size: 12.5px;
+    color: #888;
+    line-height: 1.8;
+  }
+
+  .footer-note a {
+    color: var(--forest);
+    text-decoration: none;
+    border-bottom: 1px solid var(--mist);
+  }
+
+  /* ===== MAP LINK ===== */
+  .map-link-block {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .map-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: var(--forest);
+    color: var(--cream);
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .map-btn:hover {
+    background: var(--forest-light);
+  }
+
+  @media (max-width: 520px) {
+    .page { padding: 32px 16px 70px; }
+    .day-inner { grid-template-columns: 56px 1fr; }
+    .day-number { font-size: 26px; }
+    .hero-container { height: 160px; }
+    .photo-strip { grid-template-columns: repeat(3, 1fr); }
+    .photo-thumb { height: 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">A journey by rail &amp; on foot</div>
+    <h1>Austria into <em>Slovenia</em></h1>
+    <div class="header-sub">Wachau · Salzkammergut · Salzburg · Alps · Tirol · Carinthia · Bled</div>
+    <div class="header-meta">
+      <div class="meta-item"><span class="meta-label">Duration</span><span class="meta-value">12 days</span></div>
+      <div class="meta-item"><span class="meta-label">Transport</span><span class="meta-value">Public only</span></div>
+      <div class="meta-item"><span class="meta-label">Start</span><span class="meta-value">Vienna</span></div>
+      <div class="meta-item"><span class="meta-label">End</span><span class="meta-value">Lake Bled</span></div>
+    </div>
+    <div class="map-link-block">
+      <a class="map-btn" href="https://www.google.com/maps/dir/?api=1&origin=D%C3%BCrnstein,Austria&destination=Bled,Slovenia&waypoints=Hallstatt,Austria|Gosausee,Austria|Bad+Ischl,Austria|Sankt+Wolfgang+im+Salzkammergut,Austria|Salzburg,Austria|Zell+am+See,Austria|Kaprun,Austria|St.+Johann+in+Tirol,Austria|Kitzbuhel,Austria|Lienz,Austria|Millstatt,Austria&travelmode=transit" target="_blank">🗺 Open Full Route in Google Maps</a>
+    </div>
+  </div>
+
+  <!-- ===== WACHAU ===== -->
+  <div class="region-label"><span>Wachau Valley — Day Trip from Vienna</span></div>
+
+  <!-- DAY 1 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Dürnstein, Wachau</div>
+      <img class="loading" data-wiki="Dürnstein" alt="Dürnstein, Wachau">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">1</span></div>
+      <div class="day-content">
+        <div class="day-title">Vienna — Day Trip to Dürnstein</div>
+        <div class="day-transport">🚂 Train Vienna → Krems + bus · ~1.5h each way · Return to Vienna overnight</div>
+        <div class="day-desc">The Wachau is one of Austria's most beautiful river valleys — a UNESCO World Heritage Site with vineyard terraces cascading to the Danube. Dürnstein is a tiny baroque village of a few hundred people, with a ruined hilltop castle and legendary evening light. A perfect opening day.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span>Hike up to Dürnstein Castle ruins — sweeping views over the Danube bend, vineyards, and apricot orchards. Richard the Lionheart was famously imprisoned here</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span>The vivid blue Augustinian monastery and the baroque Hauptstraße — tiny but perfectly preserved</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Danube reflections, vineyard terraces, ruined castle against the sky — classic Wachau compositions</span></div>
+        </div>
+        <div class="tip">The boat back from Dürnstein to Krems (DDSG Blue Danube) is a beautiful way to end the day if the schedule works.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SALZKAMMERGUT ===== -->
+  <div class="region-label"><span>Salzkammergut Lake District</span></div>
+
+  <!-- DAY 2 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Hallstatt</div>
+      <img class="loading" data-wiki="Hallstatt" alt="Hallstatt">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">2</span></div>
+      <div class="day-content">
+        <div class="day-title">Vienna → Hallstatt · afternoon Gosausee</div>
+        <div class="day-transport">🚂 Train Vienna → Attnang-Puchheim → Hallstatt Bahnhof · ⛴ Ferry to village · ~3.5h · then 🚌 Bus Gosausee</div>
+        <div class="day-desc">Arrive in one of Europe's most photographed villages — squeezed between an emerald lake and sheer limestone cliffs. Drop luggage, then take the 30-minute bus to Gosausee for the afternoon. Return to Hallstatt for the evening when the day crowds have gone.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-boat">⛴</div><span>Ferry arrival from Hallstatt Bahnhof across the lake — the approach to the village by water is unforgettable</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span><strong>Gosausee</strong> (afternoon) — easy 2.5h lake loop with the Dachstein glacier as backdrop. Turquoise water and white glacier walls. One of Austria's finest natural compositions</span></div>
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Gosausee option:</strong> Zwieselalm cable car for elevated glacier views</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Gosausee turquoise lake + Dachstein glacier; Hallstatt lakeside at dusk without crowds</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Gosausee</div><img class="loading" data-wiki="Gosausee" alt="Gosausee"></div>
+          <div class="photo-thumb"><div class="ph-label">Dachstein</div><img class="loading" data-wiki="Dachstein" alt="Dachstein glacier"></div>
+          <div class="photo-thumb"><div class="ph-label">Ferry</div><img class="loading" data-wiki="Hallstätter See" alt="Hallstatt lake ferry"></div>
+        </div>
+        <div class="tip">⚠️ Hallstatt is extremely crowded midday in summer. Stay one night to experience the village in early morning and evening light — when it's actually magical.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Bad Ischl & Sankt Wolfgang</div>
+      <img class="loading" data-wiki="Bad Ischl" alt="Bad Ischl">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">3</span></div>
+      <div class="day-content">
+        <div class="day-title">Early Hallstatt → Bad Ischl → Sankt Wolfgang</div>
+        <div class="day-transport">🚌 Bus Hallstatt → Gosau → Bad Ischl (~1h) · 🚌 Bus → St. Wolfgang (~30min)</div>
+        <div class="day-desc">Morning in Hallstatt before the crowds arrive — the light on the lake before 8am is extraordinary. Then move on via the imperial spa town of Bad Ischl and arrive in Sankt Wolfgang on the Wolfgangsee for the night.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span>Early morning Hallstatt — lakeside before 8am, no tourists. The light on the church and coloured houses reflected in calm water is the iconic shot</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span><strong>Bad Ischl</strong> (connection stop, ~45–60min) — Emperor Franz Joseph's summer residence. Kaiservilla, elegant Kurpark, and the famous Zauner Konditorei. A lovely imperial interlude</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span><strong>Sankt Wolfgang</strong> — medieval pilgrimage town on the Wolfgangsee. The Gothic Pacher altarpiece (1481) in the pilgrimage church is one of the finest in Austria</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Bad Ischl's imperial spa architecture; Wolfgangsee lakefront at Sankt Wolfgang in the evening</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Kaiservilla</div><img class="loading" data-wiki="Kaiservilla" alt="Kaiservilla Bad Ischl"></div>
+          <div class="photo-thumb"><div class="ph-label">Wolfgangsee</div><img class="loading" data-wiki="Wolfgangsee" alt="Wolfgangsee lake"></div>
+          <div class="photo-thumb"><div class="ph-label">St Wolfgang</div><img class="loading" data-wiki="Sankt Wolfgang im Salzkammergut" alt="Sankt Wolfgang"></div>
+        </div>
+        <div class="tip">Overnight in Sankt Wolfgang — much quieter than Hallstatt, beautiful lake views, and perfectly positioned for the Schafbergbahn departure the next morning.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Schafberg & Wolfgangsee</div>
+      <img class="loading" data-wiki="Schafberg (Salzkammergut)" alt="Schafberg">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">4</span></div>
+      <div class="day-content">
+        <div class="day-title">Schafbergbahn · Wolfgangsee Boat → Salzburg</div>
+        <div class="day-transport">🚂 Schafbergbahn from St. Wolfgang · ⛴ Boat St. Wolfgang → St. Gilgen · 🚌 Bus → Salzburg</div>
+        <div class="day-desc">The most varied day of the trip. Ride a historic 19th-century steam cog railway to 1,783m, then descend by lake boat. Already based in St. Wolfgang so there's no morning rush — just walk to the station.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-cable">🚂</div><span><strong>Schafbergbahn</strong> — historic steam cog railway running since 1893, operates May–October. Panoramic summit views over seven Salzkammergut lakes. Featured in The Sound of Music. <em>Book ahead: schafbergbahn.at</em></span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span>Summit walks at 1,783m — views to the Dachstein and Salzburg Alps. Short routes well-marked from the station</span></div>
+          <div class="activity"><div class="act-icon act-boat">⛴</div><span><strong>Wolfgangsee boat</strong> — scenic lake cruise St. Wolfgang → St. Gilgen (~45min). Passes lakeside chapels and waterfront villages</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Summit panorama over the seven lakes; Wolfgangsee from the boat deck at water level</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Steam train</div><img class="loading" data-wiki="Schafbergbahn" alt="Schafbergbahn steam train"></div>
+          <div class="photo-thumb"><div class="ph-label">Lake boat</div><img class="loading" data-wiki="Wolfgangsee" alt="Wolfgangsee boat"></div>
+          <div class="photo-thumb"><div class="ph-label">Summit</div><img class="loading" data-wiki="Schafberg (Salzkammergut)" alt="Schafberg summit"></div>
+        </div>
+        <div class="tip">The Schafbergbahn runs on a fixed timetable — plan the whole day around the train and boat schedule. Check wolfgangsee.at for current times before booking.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SALZBURG ===== -->
+  <div class="region-label"><span>Salzburg</span></div>
+
+  <!-- DAY 5 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Salzburg</div>
+      <img class="loading" data-wiki="Salzburg" alt="Salzburg">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">5</span></div>
+      <div class="day-content">
+        <div class="day-title">Salzburg — rest day</div>
+        <div class="day-transport">🏨 Base in the Altstadt · everything walkable</div>
+        <div class="day-desc">A full day in one of Europe's most beautiful small cities. The UNESCO Altstadt is compact and entirely walkable — baroque architecture, Mozart's birthplace, the fortress above, the Salzach below.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Festungsbahn</strong> funicular to Hohensalzburg Fortress — the panorama over the Altstadt rooftops with the Alps behind is the finest view in the city</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span>Mirabell Palace &amp; Gardens — formal baroque gardens with Fortress backdrop. Famous Sound of Music location</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span>Getreidegasse, Residenzplatz, Salzburg Dom — the compact UNESCO Altstadt core, full of baroque detail</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span>Mozart's Birthplace (Getreidegasse 9) — modest but atmospheric</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Fortress from Kapitelplatz; the Salzach river and fortress at dusk; Mirabell Gardens geometry</span></div>
+        </div>
+        <div class="tip">Evening option: Salzburg Festival (July–August) or chamber concerts in Mirabell Palace year-round — book well ahead.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HIGH ALPS ===== -->
+  <div class="region-label"><span>High Alps — Zell am See &amp; Kaprun</span></div>
+
+  <!-- DAY 6 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Zell am See</div>
+      <img class="loading" data-wiki="Zell am See" alt="Zell am See">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">6</span></div>
+      <div class="day-content">
+        <div class="day-title">Salzburg → Zell am See · Schmittenhöhe</div>
+        <div class="day-transport">🚂 Direct train ~2h</div>
+        <div class="day-desc">Arrive in Zell am See, a small alpine town on the shores of a glacial lake with the Kitzsteinhorn glacier visible directly across the water. Two nights here — one mountain per day.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Schmittenhöhebahn</strong> — gondola from the town centre to 1,965m. Panorama over the turquoise Zeller See below with the Kitzsteinhorn glacier directly across. Trails and restaurant at the top</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span>Lake promenade walk around the Zeller See — easy, flat, beautiful reflections of the glacier in the water</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Glacier reflected in the lake from the promenade; village from the gondola; summit panorama</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Schmittenhöhe</div><img class="loading" data-wiki="Schmittenhöhe" alt="Schmittenhöhe panorama"></div>
+          <div class="photo-thumb"><div class="ph-label">Zeller See</div><img class="loading" data-wiki="Zell am See" alt="Lake Zell"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Kitzsteinhorn Glacier</div>
+      <img class="loading" data-wiki="Kitzsteinhorn" alt="Kitzsteinhorn glacier">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">7</span></div>
+      <div class="day-content">
+        <div class="day-title">Kitzsteinhorn Glacier · afternoon → Ellmau</div>
+        <div class="day-transport">🚌 Bus Zell am See → Kaprun (~15min) · 🚡 Glacier cable car · 🚂 Train → Kitzbühel · 🚌 Wilder Kaiser shuttle → Ellmau</div>
+        <div class="day-desc">Morning on the glacier — a completely different world from yesterday's lake views. Kitzsteinhorn reaches 3,029m with permanent snow and ice year-round. Then travel east, with a short stroll through Kitzbühel's medieval Altstadt while changing connections, before the shuttle drops you at the foot of the Wilder Kaiser in Ellmau.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Kitzsteinhorn cable car</strong> from Kaprun — multiple stages to 3,029m. The top station sits on the glacier itself with 360° panorama. Snow and ice accessible without equipment in summer</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span>Marked glacier walks from the top station — short routes on and around the snow fields, dramatic high-alpine environment</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Glacier ice fields, high-alpine light at 3,000m — a completely different palette: whites, greys, stark blue sky</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Glacier top</div><img class="loading" data-wiki="Kitzsteinhorn" alt="Kitzsteinhorn top"></div>
+          <div class="photo-thumb"><div class="ph-label">Kaprun</div><img class="loading" data-wiki="Kaprun" alt="Kaprun valley"></div>
+        </div>
+        <div class="tip">Kaprun village (8km from Zell) is charming and quiet — worth 30min strolling while waiting for the cable car connection.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TIROL ===== -->
+  <div class="region-label"><span>Tirol — Wilder Kaiser &amp; Kitzbühel</span></div>
+
+  <!-- DAY 8 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Ellmau, Wilder Kaiser</div>
+      <img class="loading" data-wiki="Wilder Kaiser" alt="Wilder Kaiser mountains">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">8</span></div>
+      <div class="day-content">
+        <div class="day-title">→ Ellmau · Wilder Kaiser full day</div>
+        <div class="day-transport">🚂 Train Zell am See → Kitzbühel · 🚌 Wilder Kaiser shuttle bus → Ellmau · ~1.5h total</div>
+        <div class="day-desc">Ellmau is a small Tyrolean village sitting directly at the foot of the Wilder Kaiser — one of the most dramatic limestone rock faces in the Alps. The jagged 2,344m ridge looms immediately overhead. Overnight here, surrounded by the mountains.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Hartkaiser gondola</strong> from Ellmau — rises directly toward the Wilder Kaiser face to 1,692m. Alpine meadows, marked trails, and the closest elevated views of the rock wall anywhere in the Kaiser area</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span><strong>Kaisertal valley walk</strong> — car-free valley cutting into the Kaiser massif from nearby Going am Wilden Kaiser (10min bus). Extraordinary narrow limestone canyon with a medieval hermit cave (Einsiedelei) at the end</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span><strong>Going am Wilden Kaiser</strong> (neighbouring village, 10min) — one of Austria's most charming tiny Tyrolean villages, directly beneath the rock face. Worth an evening wander</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> The vertical Wilder Kaiser limestone walls from the meadows — unlike anything else in Austria. Tyrolean village with rock face backdrop; gondola meadow views</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Wilder Kaiser</div><img class="loading" data-wiki="Wilder Kaiser" alt="Wilder Kaiser face"></div>
+          <div class="photo-thumb"><div class="ph-label">Kaisertal</div><img class="loading" data-wiki="Kaisertal" alt="Kaisertal valley"></div>
+          <div class="photo-thumb"><div class="ph-label">Ellmau</div><img class="loading" data-wiki="Ellmau" alt="Ellmau village"></div>
+        </div>
+        <div class="tip">The Wilder Kaiser shuttle bus connects Ellmau, Going, Scheffau and Söll — easy to explore multiple villages in one day without a car.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 9 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Kitzbühel</div>
+      <img class="loading" data-wiki="Kitzbühel" alt="Kitzbühel">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">9</span></div>
+      <div class="day-content">
+        <div class="day-title">Kitzbühel morning · bus 950X → Lienz</div>
+        <div class="day-transport">🚌 Shuttle Ellmau → Kitzbühel (~30min) · 🚌 Bus 950X dep. 14:30 → Lienz (~2h via Felbertauern)</div>
+        <div class="day-desc">A morning in Kitzbühel's medieval town centre, then south through the Felbertauern tunnel into East Tyrol. Arrive Lienz in the late afternoon with time to explore the town on foot before dinner.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-city">🏛</div><span><strong>Kitzbühel Altstadt</strong> — compact medieval pedestrian centre with Gothic parish church, pastel Tyrolean facades, and the Hahnenkamm behind. Far more charming than its jet-set ski reputation suggests</span></div>
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Optional: Hahnenkammbahn</strong> — gondola above Kitzbühel with views back to the Wilder Kaiser and Kitzbüheler Horn if there's time before the 14:30 bus</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Kitzbühel's pastel Altstadt; Tyrolean church facade; mountain backdrop from the pedestrian zone</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Altstadt</div><img class="loading" data-wiki="Kitzbühel" alt="Kitzbühel Altstadt"></div>
+          <div class="photo-thumb"><div class="ph-label">Hahnenkamm</div><img class="loading" data-wiki="Hahnenkamm" alt="Hahnenkamm Kitzbühel"></div>
+        </div>
+        <div class="tip">Bus 950X (Felbertauernbus) departs Kitzbühel at 14:30, arrives Lienz ~16:30. Also a 12:40 departure for a longer Lienz afternoon. Book at postbus.at.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== EAST TYROL ===== -->
+  <div class="region-label"><span>East Tyrol — Lienz &amp; the Dolomites</span></div>
+
+  <!-- DAY 10 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Lienz, East Tyrol</div>
+      <img class="loading" data-wiki="Lienz" alt="Lienz">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">10</span></div>
+      <div class="day-content">
+        <div class="day-title">Lienz — full day</div>
+        <div class="day-transport">🏨 Based in Lienz · gondolas and old town on foot</div>
+        <div class="day-desc">Lienz is one of Austria's most underrated towns — a small market town beneath the dramatic Lienzer Dolomiten, where vertical rock faces rise directly above the valley. Genuine, unhurried, and visually extraordinary.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Zettersfeld gondola</strong> — rises into the Lienzer Dolomiten above the town. Alpine meadows, Dolomite rock faces, views down to the Isel-Drau confluence and across to the Glockner group</span></div>
+          <div class="activity"><div class="act-icon act-cable">🚡</div><span><strong>Hochstein gondola</strong> — alternative lift, similarly dramatic. Both give access to walking trails through Alpine terrain rarely seen by tourists</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span><strong>Schloss Bruck</strong> — medieval castle above the town, houses the Egger-Lienz Museum. Albin Egger-Lienz was from here and painted these landscapes obsessively — fascinating reference for a painter</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span>Isel and Drau river confluence, Liebburg palace, Lienz Altstadt — compact and walkable with authentic local character</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Lienzer Dolomiten rock faces looming above town; gondola meadows; Schloss Bruck against mountain backdrop; river confluence below</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Dolomiten</div><img class="loading" data-wiki="Lienzer Dolomiten" alt="Lienzer Dolomiten"></div>
+          <div class="photo-thumb"><div class="ph-label">Schloss Bruck</div><img class="loading" data-wiki="Schloss Bruck (Lienz)" alt="Schloss Bruck Lienz"></div>
+          <div class="photo-thumb"><div class="ph-label">Lienz</div><img class="loading" data-wiki="Lienz" alt="Lienz town"></div>
+        </div>
+        <div class="tip">The Egger-Lienz Gallery inside Schloss Bruck is genuinely worth it for a painter — his landscapes of the East Tyrol are stark and powerful.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CARINTHIA ===== -->
+  <div class="region-label"><span>Carinthia — Millstatt</span></div>
+
+  <!-- DAY 11 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Millstatt, Carinthia</div>
+      <img class="loading" data-wiki="Millstatt" alt="Millstatt">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">11</span></div>
+      <div class="day-content">
+        <div class="day-title">Lienz → Millstatt · evening arrival</div>
+        <div class="day-transport">🚂 Train Lienz → Spittal/Drau (~45min) · 🚌 Bus → Millstatt (~15min)</div>
+        <div class="day-desc">Travel into Carinthia and arrive at Millstatt on the deep-blue Millstätter See. A gentler, more intimate stop after the drama of the Dolomites — a Romanesque monastery, a long lake promenade, and very few tourists.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-city">🏛</div><span><strong>Millstatt Abbey</strong> (12th century Romanesque) — one of the finest Romanesque cloisters in Carinthia, peaceful and rarely crowded</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span><strong>Via Paradiso</strong> — the scenic lakeside walking path connecting the villages along the Millstätter See. Flat, beautiful, and serene</span></div>
+          <div class="activity"><div class="act-icon act-boat">⛴</div><span>Swimming or boat hire on the Millstätter See — one of Carinthia's cleanest and warmest lakes in summer</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Millstätter See lakefront reflections; Romanesque monastery cloister; lakeside village scene</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Lake</div><img class="loading" data-wiki="Millstätter See" alt="Millstätter See"></div>
+          <div class="photo-thumb"><div class="ph-label">Abbey</div><img class="loading" data-wiki="Millstatt Abbey" alt="Millstatt Abbey"></div>
+        </div>
+        <div class="tip">Seeboden and Döbriach at the eastern end of the lake are quieter alternatives to stay if Millstatt is full — same lake, same tranquility.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLOVENIA ===== -->
+  <div class="region-label"><span>Slovenia — Lake Bled</span></div>
+
+  <!-- DAY 12 -->
+  <div class="day-card">
+    <div class="hero-container">
+      <div class="hero-placeholder">Lake Bled, Slovenia</div>
+      <img class="loading" data-wiki="Lake Bled" alt="Lake Bled">
+    </div>
+    <div class="day-inner">
+      <div class="day-num-col"><span class="day-word">Day</span><span class="day-number">12</span></div>
+      <div class="day-content">
+        <div class="day-title">→ Lake Bled</div>
+        <div class="day-transport">🚂 Millstatt → Spittal → Villach · 🚂 Villach → Jesenice · 🚌 Bus → Bled · ~3.5–4h total</div>
+        <div class="day-desc">Cross into Slovenia for the finale — one of the most beautiful lakes in all of Europe. A medieval island church, a clifftop castle, and impossibly turquoise water surrounded by the Julian Alps. The perfect ending to the journey.</div>
+        <div class="activities">
+          <div class="activity"><div class="act-icon act-boat">⛴</div><span><strong>Pletna boat</strong> — traditional wooden gondola to Bled Island. Ring the wishing bell in the 17th-century church tower. One of Europe's more magical small experiences</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span><strong>Bled Castle</strong> — clifftop fortress above the lake (15min walk up). Panoramic views over the island, lake, and Julian Alps behind</span></div>
+          <div class="activity"><div class="act-icon act-hike">🥾</div><span>Circular lake walk (~6km, 2h flat) — the full perimeter of Lake Bled. One of the finest easy walks in the Alps</span></div>
+          <div class="activity"><div class="act-icon act-city">🏛</div><span>Try a <em>kremšnita</em> (Bled cream cake) at the Park Hotel terrace — a local institution since 1953, not to be skipped</span></div>
+          <div class="activity"><div class="act-icon act-paint">🎨</div><span><strong>Painting:</strong> Island church from the south shore at dawn; castle reflected in the lake; Julian Alps backdrop; Pletna boat on the water</span></div>
+        </div>
+        <div class="photo-strip">
+          <div class="photo-thumb"><div class="ph-label">Island church</div><img class="loading" data-wiki="Lake Bled" alt="Bled island"></div>
+          <div class="photo-thumb"><div class="ph-label">Bled Castle</div><img class="loading" data-wiki="Bled Castle" alt="Bled castle"></div>
+          <div class="photo-thumb"><div class="ph-label">Julian Alps</div><img class="loading" data-wiki="Julian Alps" alt="Julian Alps"></div>
+        </div>
+        <div class="tip">Bled is also a gateway to further Slovenia: Lake Bohinj (30min bus, wilder and quieter), Vintgar Gorge (4km walk from Bled), or Ljubljana (1.5h by bus) if the journey continues.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <h3>Practical Notes</h3>
+    <p>
+      All journeys possible by public transport — ÖBB train, Postbus, and Flixbus.<br>
+      Book the <strong>Schafbergbahn</strong> in advance: <a href="https://www.schafbergbahn.at" target="_blank">schafbergbahn.at</a><br>
+      Bus 950X Kitzbühel → Lienz: check timetable at <a href="https://www.postbus.at" target="_blank">postbus.at</a><br>
+      Villach → Bled: direct Flixbus or local bus via Jesenice, ~€15–25<br>
+      ÖBB Sparschiene tickets save significantly if booked in advance: <a href="https://www.oebb.at" target="_blank">oebb.at</a><br><br>
+      <em>Best months: June and September. July–August is peak season — Hallstatt and Bled are very crowded midday.</em>
+    </p>
+  </div>
+
+</div>
+
+<script>
+// Load images via Wikipedia REST API (CORS-enabled, returns verified URLs)
+async function loadWikiImage(img) {
+  const title = img.dataset.wiki;
+  if (!title) return;
+  try {
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    if (data.thumbnail && data.thumbnail.source) {
+      img.src = data.thumbnail.source.replace(/\/\d+px-/, '/960px-');
+      img.onload = () => { img.classList.remove('loading'); img.onerror = null; };
+      img.onerror = () => img.style.display = 'none';
+      return;
+    }
+  } catch(e) {}
+  img.style.display = 'none';
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      loadWikiImage(entry.target);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { rootMargin: '300px' });
+
+document.querySelectorAll('img[data-wiki]').forEach(img => observer.observe(img));
+</script>
+
+</body>
+</html>
